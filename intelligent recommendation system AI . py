@@ -1,0 +1,154 @@
+
+# INTELLIGENT RECOMMENDATION SYSTEM
+# Developed by Amirtha
+
+
+class RecommendationEngine:
+
+    def __init__(self):
+
+        self.items = [
+            {"name": "Inception", "category": "Movie", "genre": "Sci-Fi", "rating": 9.0},
+            {"name": "Interstellar", "category": "Movie", "genre": "Sci-Fi", "rating": 9.2},
+            {"name": "Atomic Habits", "category": "Book", "genre": "Self Help", "rating": 4.8},
+            {"name": "Rich Dad Poor Dad", "category": "Book", "genre": "Finance", "rating": 4.7},
+            {"name": "Spotify", "category": "App", "genre": "Music", "rating": 4.9},
+            {"name": "Netflix", "category": "App", "genre": "Entertainment", "rating": 4.8},
+            {"name": "Coursera", "category": "Course", "genre": "Education", "rating": 4.9},
+            {"name": "Udemy Python", "category": "Course", "genre": "Technology", "rating": 4.8}
+        ]
+
+        self.preferences = []
+        self.history = []
+
+    def show_items(self):
+
+        print("\nAVAILABLE ITEMS")
+        print("-" * 70)
+
+        for index, item in enumerate(self.items, start=1):
+            print(
+                f"{index}. {item['name']} | "
+                f"{item['category']} | "
+                f"{item['genre']} | "
+                f"⭐ {item['rating']}"
+            )
+
+    def add_preference(self):
+
+        genre = input("\nEnter Favorite Genre: ")
+
+        self.preferences.append(genre)
+
+        print("Preference Saved Successfully!")
+
+    def rate_item(self):
+
+        self.show_items()
+
+        try:
+            choice = int(input("\nSelect Item Number: "))
+            user_rating = float(input("Your Rating (1-10): "))
+
+            selected = self.items[choice - 1]
+
+            self.history.append({
+                "item": selected["name"],
+                "genre": selected["genre"],
+                "rating": user_rating
+            })
+
+            print("Rating Added!")
+
+        except:
+            print("Invalid Input!")
+
+    def generate_recommendations(self):
+
+        print("\nPERSONALIZED RECOMMENDATIONS")
+        print("-" * 70)
+
+        recommendation_list = []
+
+        for item in self.items:
+
+            score = item["rating"] * 10
+
+            if item["genre"] in self.preferences:
+                score += 50
+
+            for history in self.history:
+                if history["genre"] == item["genre"]:
+                    score += history["rating"]
+
+            recommendation_list.append((score, item))
+
+        recommendation_list.sort(reverse=True)
+
+        for score, item in recommendation_list[:5]:
+
+            print(
+                f"{item['name']} | "
+                f"{item['category']} | "
+                f"{item['genre']} | "
+                f"Recommendation Score: {score:.1f}"
+            )
+
+    def analytics(self):
+
+        print("\nUSER ANALYTICS")
+        print("-" * 70)
+
+        print(f"Preferences Added : {len(self.preferences)}")
+        print(f"Items Rated      : {len(self.history)}")
+
+        if self.history:
+
+            average = sum(
+                h["rating"]
+                for h in self.history
+            ) / len(self.history)
+
+            print(f"Average Rating   : {average:.2f}")
+
+    def run(self):
+
+        while True:
+
+            print("\n" + "=" * 70)
+            print("INTELLIGENT RECOMMENDATION SYSTEM")
+            print("=" * 70)
+
+            print("1. View Items")
+            print("2. Add Preferences")
+            print("3. Rate Item")
+            print("4. Get Recommendations")
+            print("5. Analytics")
+            print("6. Exit")
+
+            choice = input("\nEnter Choice: ")
+
+            if choice == "1":
+                self.show_items()
+
+            elif choice == "2":
+                self.add_preference()
+
+            elif choice == "3":
+                self.rate_item()
+
+            elif choice == "4":
+                self.generate_recommendations()
+
+            elif choice == "5":
+                self.analytics()
+
+            elif choice == "6":
+                print("\nThank You For Using The System!")
+                break
+
+            else:
+                print("Invalid Choice!")
+
+engine = RecommendationEngine()
+engine.run()
