@@ -1,0 +1,142 @@
+
+# SMART PRODUCT RECOMMENDATION SYSTEM
+# Developed by Amirtha
+
+
+class ProductRecommendationSystem:
+
+    def __init__(self):
+
+        self.products = [
+            {"name": "Laptop Pro X", "category": "Electronics", "price": 65000, "rating": 4.8},
+            {"name": "Wireless Earbuds", "category": "Electronics", "price": 3500, "rating": 4.5},
+            {"name": "Gaming Mouse", "category": "Electronics", "price": 1500, "rating": 4.6},
+            {"name": "Python Programming Book", "category": "Books", "price": 800, "rating": 4.9},
+            {"name": "Data Science Handbook", "category": "Books", "price": 1200, "rating": 4.7},
+            {"name": "Running Shoes", "category": "Fashion", "price": 2500, "rating": 4.4},
+            {"name": "Smart Watch", "category": "Electronics", "price": 5000, "rating": 4.7},
+            {"name": "Backpack", "category": "Accessories", "price": 1000, "rating": 4.3},
+            {"name": "Mechanical Keyboard", "category": "Electronics", "price": 3000, "rating": 4.8},
+            {"name": "Water Bottle", "category": "Accessories", "price": 500, "rating": 4.2}
+        ]
+
+        self.user_history = []
+
+    def display_products(self):
+
+        print("\nAVAILABLE PRODUCTS")
+        print("-" * 80)
+
+        for i, product in enumerate(self.products, start=1):
+            print(
+                f"{i}. {product['name']} | "
+                f"{product['category']} | "
+                f"₹{product['price']} | "
+                f"⭐ {product['rating']}"
+            )
+
+    def add_purchase_history(self):
+
+        self.display_products()
+
+        try:
+            choice = int(input("\nSelect Product Number: "))
+
+            selected = self.products[choice - 1]
+
+            self.user_history.append(selected)
+
+            print(f"\n{selected['name']} added to purchase history!")
+
+        except:
+            print("Invalid Input!")
+
+    def recommend_products(self):
+
+        category = input("\nEnter Preferred Category: ")
+        budget = int(input("Enter Your Budget: ₹"))
+
+        recommendations = []
+
+        for product in self.products:
+
+            score = 0
+
+            if product["category"].lower() == category.lower():
+                score += 50
+
+            if product["price"] <= budget:
+                score += 30
+
+            score += int(product["rating"] * 10)
+
+            recommendations.append((score, product))
+
+        recommendations.sort(reverse=True)
+
+        print("\nTOP PRODUCT RECOMMENDATIONS")
+        print("-" * 80)
+
+        for score, product in recommendations[:5]:
+
+            print(
+                f"{product['name']} | "
+                f"{product['category']} | "
+                f"₹{product['price']} | "
+                f"⭐ {product['rating']} | "
+                f"Score: {score}"
+            )
+
+    def analytics(self):
+
+        print("\nUSER ANALYTICS")
+        print("-" * 80)
+
+        print(f"Products Purchased : {len(self.user_history)}")
+
+        if self.user_history:
+
+            total = sum(
+                product["price"]
+                for product in self.user_history
+            )
+
+            print(f"Total Spending     : ₹{total}")
+
+    def run(self):
+
+        while True:
+
+            print("\n" + "=" * 80)
+            print("SMART PRODUCT RECOMMENDATION SYSTEM")
+            print("=" * 80)
+
+            print("1. View Products")
+            print("2. Add Purchase History")
+            print("3. Get Recommendations")
+            print("4. Analytics")
+            print("5. Exit")
+
+            choice = input("\nEnter Choice: ")
+
+            if choice == "1":
+                self.display_products()
+
+            elif choice == "2":
+                self.add_purchase_history()
+
+            elif choice == "3":
+                self.recommend_products()
+
+            elif choice == "4":
+                self.analytics()
+
+            elif choice == "5":
+                print("\nThank You For Using The System!")
+                break
+
+            else:
+                print("Invalid Choice!")
+
+system = ProductRecommendationSystem()
+system.run()
