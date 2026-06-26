@@ -79,6 +79,6 @@ The highest-scoring items are displayed as personalized recommendations.
 
 👩‍💻 Author
 
-Amirtha
+Amirthavarshini 
 
 If you like this project, don't forget to ⭐ star the repository and share your feedback!
