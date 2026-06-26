@@ -1,0 +1,159 @@
+
+# SMART BOOK RECOMMENDATION SYSTEM
+# Developed by Amirtha
+
+
+class BookRecommendationSystem:
+
+    def __init__(self):
+
+        self.books = [
+            {"title": "Atomic Habits", "genre": "Self Help", "rating": 4.8},
+            {"title": "Rich Dad Poor Dad", "genre": "Finance", "rating": 4.7},
+            {"title": "The Psychology of Money", "genre": "Finance", "rating": 4.9},
+            {"title": "Harry Potter", "genre": "Fantasy", "rating": 4.9},
+            {"title": "The Hobbit", "genre": "Fantasy", "rating": 4.8},
+            {"title": "Deep Work", "genre": "Productivity", "rating": 4.7},
+            {"title": "Clean Code", "genre": "Technology", "rating": 4.9},
+            {"title": "Python Crash Course", "genre": "Technology", "rating": 4.8},
+            {"title": "Think and Grow Rich", "genre": "Self Help", "rating": 4.6},
+            {"title": "Ikigai", "genre": "Self Help", "rating": 4.7}
+        ]
+
+        self.user_profile = {}
+        self.reading_history = []
+
+    def show_books(self):
+
+        print("\nAVAILABLE BOOKS")
+        print("-" * 60)
+
+        for i, book in enumerate(self.books, start=1):
+            print(
+                f"{i}. {book['title']} | "
+                f"{book['genre']} | "
+                f"⭐ {book['rating']}"
+            )
+
+    def create_profile(self):
+
+        name = input("Enter Your Name: ")
+        favorite_genre = input("Favorite Genre: ")
+
+        self.user_profile = {
+            "name": name,
+            "favorite_genre": favorite_genre
+        }
+
+        print("\nProfile Created Successfully!")
+
+    def add_reading_history(self):
+
+        self.show_books()
+
+        try:
+            choice = int(input("\nChoose Book Number: "))
+            selected = self.books[choice - 1]
+
+            self.reading_history.append(selected)
+
+            print(f"\n'{selected['title']}' added to history!")
+
+        except:
+            print("Invalid Choice!")
+
+    def recommend_books(self):
+
+        if not self.user_profile:
+            print("\nCreate profile first!")
+            return
+
+        genre = self.user_profile["favorite_genre"]
+
+        print("\nSMART RECOMMENDATIONS")
+        print("-" * 60)
+
+        recommendations = []
+
+        for book in self.books:
+
+            score = 0
+
+            if book["genre"].lower() == genre.lower():
+                score += 50
+
+            score += int(book["rating"] * 10)
+
+            recommendations.append((score, book))
+
+        recommendations.sort(reverse=True, key=lambda x: x[0])
+
+        for score, book in recommendations[:5]:
+
+            print(
+                f"{book['title']} | "
+                f"{book['genre']} | "
+                f"Score: {score}"
+            )
+
+    def analytics(self):
+
+        print("\nREADING ANALYTICS")
+        print("-" * 60)
+
+        total = len(self.reading_history)
+
+        print(f"Books Read: {total}")
+
+        genres = {}
+
+        for book in self.reading_history:
+
+            genres[book["genre"]] = genres.get(
+                book["genre"], 0
+            ) + 1
+
+        for genre, count in genres.items():
+            print(f"{genre}: {count}")
+
+    def run(self):
+
+        while True:
+
+            print("\n" + "=" * 60)
+            print("SMART BOOK RECOMMENDATION SYSTEM")
+            print("=" * 60)
+
+            print("1. Create Profile")
+            print("2. View Books")
+            print("3. Add Reading History")
+            print("4. Recommend Books")
+            print("5. Analytics")
+            print("6. Exit")
+
+            choice = input("\nEnter Choice: ")
+
+            if choice == "1":
+                self.create_profile()
+
+            elif choice == "2":
+                self.show_books()
+
+            elif choice == "3":
+                self.add_reading_history()
+
+            elif choice == "4":
+                self.recommend_books()
+
+            elif choice == "5":
+                self.analytics()
+
+            elif choice == "6":
+                print("\nGoodbye!")
+                break
+
+            else:
+                print("Invalid Choice!")
+
+system = BookRecommendationSystem()
+system.run()
